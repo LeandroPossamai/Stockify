@@ -12,12 +12,14 @@
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.2.9",
     "aws-sdk": "^2.1534.0",
+    "axios": "^1.6.5",
     "firebase": "^10.7.1",
     "framer-motion": "^10.18.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.3",
+    "react-icons": "^5.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

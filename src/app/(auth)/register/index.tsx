@@ -1,7 +1,7 @@
 'use client'
 import { Divider } from '@/components/divider'
 import { useUser } from '@/hooks/use-user'
-import { LoginRequest, loginSchema } from '@/types/auth'
+import { LoginRequest, SignUpRequest, loginSchema, signUpSchema } from '@/types/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, CardBody, CardFooter, Input } from '@nextui-org/react'
 import Image from 'next/image'
@@ -10,19 +10,19 @@ import { redirect } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
 
-export function LoginForm() {
-  const { register, handleSubmit, formState } = useForm<LoginRequest>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' }
+export function RegisterForm() {
+  const { register, handleSubmit, formState } = useForm<SignUpRequest>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: { email: '', password: '', confirmPassword: '' }
   })
-  const { signInWithGoogle, singIn, isAuthenticated } = useUser()
+  const { signInWithGoogle, singUp, isAuthenticated } = useUser()
 
   if (isAuthenticated) {
     return redirect('/')
   }
 
-  async function onSubmit({ email, password }: LoginRequest) {
-    await singIn(email, password)
+  async function onSubmit({ email, password }: SignUpRequest) {
+    await singUp(email, password)
   }
 
   return (
@@ -37,10 +37,16 @@ export function LoginForm() {
             errorMessage={formState.errors.password?.message}
             {...register('password')}
           />
+          <Input
+            label="Confirmar senha"
+            type="password"
+            errorMessage={formState.errors.confirmPassword?.message}
+            {...register('confirmPassword')}
+          />
         </CardBody>
         <CardFooter className="flex-col">
           <Button type="submit" color="primary" className="w-full">
-            Entrar
+            Cadastrar
           </Button>
           <Divider text="Ou" />
           <Button type="button" variant="ghost" className="w-full" onPress={signInWithGoogle}>
@@ -48,9 +54,9 @@ export function LoginForm() {
             Continue com Google
           </Button>
           <div className="mt-4 text-sm font-medium">
-            Não tem uma conta?{' '}
-            <Link href="/register" className="text-indigo-600 hover:text-indigo-500 hover:underline">
-              Cadastre-se
+            Já tem uma conta?{' '}
+            <Link href="/login" className="text-indigo-600 hover:text-indigo-500 hover:underline">
+              Entre
             </Link>
           </div>
         </CardFooter>

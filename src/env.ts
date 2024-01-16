@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
-const server = z.object({
-})
+const server = z.object({})
 
 type ServerEnvs = z.infer<typeof server>
 
@@ -11,8 +10,11 @@ const client = z.object({
   NEXT_PUBLIC_FIREBASE_PROJECT_ID: z.string(),
   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: z.string(),
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER: z.string(),
-  NEXT_PUBLIC_FIREBASE_APP_ID: z.string()
-
+  NEXT_PUBLIC_FIREBASE_APP_ID: z.string(),
+  NEXT_PUBLIC_AWS_ACCESS_KEY_ID: z.string(),
+  NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: z.string(),
+  NEXT_PUBLIC_AWS_BUCKET: z.string(),
+  NEXT_PUBLIC_API_BASE_URL: z.string()
 })
 
 type ClientEnvs = z.infer<typeof client>
@@ -23,7 +25,11 @@ const processEnv = {
   NEXT_PUBLIC_FIREBASE_PROJECT_ID: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER,
-  NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  NEXT_PUBLIC_AWS_ACCESS_KEY_ID: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+  NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+  NEXT_PUBLIC_AWS_BUCKET: process.env.NEXT_PUBLIC_AWS_BUCKET,
+  NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL
 }
 
 const merged = server.merge(client)
