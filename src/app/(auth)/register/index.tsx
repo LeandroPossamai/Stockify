@@ -1,5 +1,6 @@
 'use client'
 import { Divider } from '@/components/divider'
+import { useTheme } from '@/hooks/use-theme'
 import { useUser } from '@/hooks/use-user'
 import { SignUpRequest, signUpSchema } from '@/types/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,6 +17,7 @@ export function RegisterForm() {
     defaultValues: { email: '', password: '', confirmPassword: '' }
   })
   const { signInWithGoogle, singUp, isAuthenticated } = useUser()
+  const { selected } = useTheme()
 
   if (isAuthenticated) {
     return redirect('/')
@@ -27,7 +29,7 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <Image src="/stockify.png" alt="logo" width={300} height={300} />
+      <Image src={selected === 'light' ? '/stockify.png' : '/stockify_white.png'} alt="logo" width={300} height={300} />
       <Card>
         <CardBody className="space-y-3">
           <Input label="Email" errorMessage={formState.errors.email?.message} {...register('email')} />
