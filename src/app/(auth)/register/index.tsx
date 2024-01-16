@@ -1,7 +1,7 @@
 'use client'
 import { Divider } from '@/components/divider'
 import { useUser } from '@/hooks/use-user'
-import { LoginRequest, SignUpRequest, loginSchema, signUpSchema } from '@/types/auth'
+import { SignUpRequest, signUpSchema } from '@/types/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, CardBody, CardFooter, Input } from '@nextui-org/react'
 import Image from 'next/image'
