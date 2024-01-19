@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  firebaseUid String
+  email       String
+  name        String?
+  username    String? @unique
+  imageId     String? @db.ObjectId
+  photoURL    Image?  @relation(fields: [imageId], references: [id])
+  role        Role    @default(USER)
+}
+
+model Stock {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  products Product[]
+}
+
+model Product {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  amount      Int
+  price       Float
+  images      Image[]
+  description String
+  supplier    String
+  Stock       Stock?  @relation(fields: [stockId], references: [id])
+  stockId     String? @db.ObjectId
+}
+
+model Image {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  url       String
+  User      User[]
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.ObjectId
+}
+
+enum Role {
+  USER
+  ADMIN
+}

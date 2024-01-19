@@ -1,10 +1,11 @@
 'use client'
-import { setApiToken } from '@/services/axios'
+import { apiClient, setApiToken } from '@/services/axios'
 import { auth } from '@/services/firebase'
 import {
   GoogleAuthProvider,
   User,
   createUserWithEmailAndPassword,
+  getAdditionalUserInfo,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -42,7 +43,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   async function singUp(email: string, password: string) {
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
+      const { user } = await createUserWithEmailAndPassword(auth, email, password)
+      await apiClient.post('api/users', user)
       location.reload()
     } catch (error) {}
   }
@@ -58,10 +60,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider()
 
-    provider.setCustomParameters({ login_hint: 'usuario@exemplo.com' })
-
     try {
-      await signInWithPopup(auth, provider)
+      const userCredential = await signInWithPopup(auth, provider)
+      const userInfo = getAdditionalUserInfo(userCredential)
+      if (userInfo?.isNewUser) {
+        await apiClient.post('api/users', userCredential.user)
+      }
       location.reload()
     } catch (error) {}
   }
