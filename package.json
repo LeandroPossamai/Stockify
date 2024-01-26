@@ -22,6 +22,7 @@
     "firebase-admin": "^12.0.0",
     "framer-motion": "^10.18.0",
     "next": "14.0.4",
+    "nookies": "^2.5.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.3",
@@ -29,6 +30,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/cookies": "^0.7.10",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

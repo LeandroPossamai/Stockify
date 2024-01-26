@@ -1,5 +1,6 @@
 'use client'
-import { apiClient, setApiToken } from '@/services/axios'
+import { cookies } from '@/lib/cookies'
+import { api, setApiToken } from '@/services/axios'
 import { auth } from '@/services/firebase'
 import {
   GoogleAuthProvider,
@@ -32,7 +33,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
       const token = await user?.getIdToken(true)
-      setApiToken(token)
+      cookies.set('idToken', token)
       setUser(user)
       setIsLoading(false)
     })
@@ -44,7 +45,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   async function singUp(email: string, password: string) {
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
-      await apiClient.post('api/users', user)
+      await api.post('api/users', user)
       location.reload()
     } catch (error) {}
   }
@@ -64,7 +65,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       const userCredential = await signInWithPopup(auth, provider)
       const userInfo = getAdditionalUserInfo(userCredential)
       if (userInfo?.isNewUser) {
-        await apiClient.post('api/users', userCredential.user)
+        await api.post('api/users', userCredential.user)
       }
       location.reload()
     } catch (error) {}
